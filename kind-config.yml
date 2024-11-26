@@ -10,4 +10,4 @@ nodes:
       hostPort: 30001
       protocol: TCP   
   - role: worker
-  - role: worker2
+  - role: worker
