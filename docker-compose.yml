@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pgdb
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456a.
+      POSTGRES_DB: dockerDB
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynetwork
+  myapp:
+    build: ./pyapp
+    container_name: flaskapp
+    environment:
+      DATABASE_URL: postgresql://root:123456a.@pgdb:5432/dockerDB
+    volumes:
+      - ./pyapp:/app
+    networks:
+      - mynetwork
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+networks:
+  mynetwork:
+    driver: bridge
